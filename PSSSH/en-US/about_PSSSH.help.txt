@@ -1,0 +1,11 @@
+PSTOPIC
+    about_PSSSH
+
+SHORT DESCRIPTION
+    PSSSH allows you to run SSH commands on remote systems
+
+LONG DESCRIPTION
+    PSSSH utilizes Putty's PLINK.exe tool to run SSH commands
+
+DETAILED DESCRIPTION
+    Functions that will use Putty's PLINK.exe tool to run SSH commands
