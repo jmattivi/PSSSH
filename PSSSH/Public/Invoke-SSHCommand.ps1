@@ -1,20 +1,50 @@
-﻿#Invoke-sshcommand#################################
-#Created By: Jon Mattivi
-#Created Date: 20150717
-#Modified Date: 20150717
-#v1.0 Module for SSH Commands
-############################################
-
-function Invoke-sshcommand
+﻿function Invoke-SSHCommand
 {
+    <#
+    .NOTES
+    	AUTHOR: 	Jon Mattivi
+    	COMPANY: 
+    	CREATED DATE: 2018-01-31
+
+    .SYNOPSIS
+        Uses Putty plink.exe to execute ssh commands on remote hosts
+        
+    .DESCRIPTION
+        Uses Putty plink.exe to execute ssh commands on remote hosts
+
+    .PARAMETER hostname
+        Name of remote host to run commands on
+
+    .PARAMETER username
+        Username to connect to remote host
+
+    .PARAMETER sshcommand
+        Command to run on remote host
+
+    .PARAMETER autoacceptkey
+        Automatically accept the key for the remote host - Default value is True
+
+    .PARAMETER password
+        Password specified for user when key authentication is not used
+
+    .PARAMETER keyfilepath
+        Path to key file when using key authentication
+    	    
+    .EXAMPLE
+        $password = ConvertTo-SecureString "PlainTextPassword" -AsPlainText -Force
+        $Cred = New-Object System.Management.Automation.PSCredential ("username", $password)
+        Invoke-SSHCommand -hostname ServerX -username svcaccount -credential $Cred -sshcommand "ls /usr/svcaccount/"
+        
+    .EXAMPLE
+        Invoke-SSHCommand -hostname ServerX -username svcaccount -keyfilepath C:\sshkeys\ServerX.key -sshcommand "ls /usr/svcaccount/"
+
+    #>
+    
     [CmdletBinding(DefaultParameterSetName = 'UsePasswordAuthentication')]
     param (
         [Parameter(Position = 0, Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [string]$hostname,
-        [Parameter(Position = 1, Mandatory = $true)]
-        [ValidateNotNullOrEmpty()]
-        [string]$username,
         [Parameter(Position = 2, Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [string]$sshcommand,
@@ -22,17 +52,25 @@ function Invoke-sshcommand
         [Switch]$autoacceptkey = $true,
         [Parameter(ParameterSetName = 'UsePasswordAuthentication', Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        [string]$password,
+        [System.Management.Automation.PSCredential]
+        [System.Management.Automation.Credential()]
+        $credential,
+        [Parameter(ParameterSetName = 'UseKeyAuthentication', Mandatory = $true)]
+        [ValidateNotNullOrEmpty()]
+        [string]$username,
         [Parameter(ParameterSetName = 'UseKeyAuthentication', Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [string]$keyfilepath
     )
     
     $rawoutput = @()
-    $plink = "$PSScriptRoot\bin\plink.exe"
+    $plink = "$PSScriptRoot\..\bin\plink.exe"
 	
-    If ($password)
+    If ($credential)
     {
+        $username = $credential.UserName
+        $password = $credential.GetNetworkCredential().Password
+
         If ($autoacceptkey -eq $true)
         {
             $cmd = @(
@@ -108,8 +146,8 @@ function Invoke-sshcommand
             sshcommand    = $sshcommand
             keyfilepath   = $keyfilepath
             autoacceptkey = $autoacceptkey
-            output        = $output
         })
     
     Write-Verbose $pubdata
+    Write-Output $output
 }
