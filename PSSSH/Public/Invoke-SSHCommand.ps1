@@ -12,31 +12,31 @@
     .DESCRIPTION
         Uses Putty plink.exe to execute ssh commands on remote hosts
 
-    .PARAMETER hostname
+    .PARAMETER HostName
         Name of remote host to run commands on
 
-    .PARAMETER username
-        Username to connect to remote host
-
-    .PARAMETER sshcommand
+    .PARAMETER SSHCommand
         Command to run on remote host
 
-    .PARAMETER autoacceptkey
+    .PARAMETER AutoAcceptKey
         Automatically accept the key for the remote host - Default value is True
 
-    .PARAMETER credential
+    .PARAMETER Credential
         Network credential object used when key authentication is not used
+    
+    .PARAMETER UserName
+        Username to connect to remote host when key authentication is used
 
-    .PARAMETER keyfilepath
+    .PARAMETER KeyFilePath
         Path to key file when using key authentication
     	    
     .EXAMPLE
         $password = ConvertTo-SecureString "PlainTextPassword" -AsPlainText -Force
         $Cred = New-Object System.Management.Automation.PSCredential ("username", $password)
-        Invoke-SSHCommand -hostname ServerX -username svcaccount -credential $Cred -sshcommand "ls /usr/svcaccount/"
+        Invoke-SSHCommand -HostName ServerX -UserName svcaccount -Credential $Cred -SSHCommand "ls /usr/svcaccount/"
         
     .EXAMPLE
-        Invoke-SSHCommand -hostname ServerX -username svcaccount -keyfilepath C:\sshkeys\ServerX.key -sshcommand "ls /usr/svcaccount/"
+        Invoke-SSHCommand -HostName ServerX -UserName svcaccount -KeyFilePath C:\sshkeys\ServerX.key -SSHCommand "ls /usr/svcaccount/"
 
     #>
     
@@ -44,23 +44,23 @@
     param (
         [Parameter(Position = 0, Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        [string]$hostname,
+        [string]$HostName,
         [Parameter(Position = 2, Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        [string]$sshcommand,
+        [string]$SSHCommand,
         [Parameter(Position = 3, Mandatory = $false)]
-        [Switch]$autoacceptkey = $true,
+        [Switch]$AutoAcceptKey = $true,
         [Parameter(ParameterSetName = 'UsePasswordAuthentication', Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.Credential()]
-        $credential,
+        $Credential,
         [Parameter(ParameterSetName = 'UseKeyAuthentication', Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        [string]$username,
+        [string]$UserName,
         [Parameter(ParameterSetName = 'UseKeyAuthentication', Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        [string]$keyfilepath
+        [string]$KeyFilePath
     )
     
     $rawoutput = @()
