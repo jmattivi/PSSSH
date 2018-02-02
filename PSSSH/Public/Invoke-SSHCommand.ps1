@@ -33,7 +33,7 @@
     .EXAMPLE
         $password = ConvertTo-SecureString "PlainTextPassword" -AsPlainText -Force
         $Cred = New-Object System.Management.Automation.PSCredential ("username", $password)
-        Invoke-SSHCommand -HostName ServerX -UserName svcaccount -Credential $Cred -SSHCommand "ls /usr/svcaccount/"
+        Invoke-SSHCommand -HostName ServerX -Credential $Cred -SSHCommand "ls /usr/svcaccount/"
         
     .EXAMPLE
         Invoke-SSHCommand -HostName ServerX -UserName svcaccount -KeyFilePath C:\sshkeys\ServerX.key -SSHCommand "ls /usr/svcaccount/"
