@@ -24,8 +24,8 @@
     .PARAMETER autoacceptkey
         Automatically accept the key for the remote host - Default value is True
 
-    .PARAMETER password
-        Password specified for user when key authentication is not used
+    .PARAMETER credential
+        Network credential object used when key authentication is not used
 
     .PARAMETER keyfilepath
         Path to key file when using key authentication
