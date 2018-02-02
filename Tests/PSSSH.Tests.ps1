@@ -1,5 +1,5 @@
 
-Import-Module -Force $PSScriptRoot\..\PSSSH\Public\Invoke-SSHCommand.ps1
+Import-Module -Force $PSScriptRoot\..\PSSSH\PSSSH.psm1
 
 Describe 'Invoke-SSHCommand' {
     Context 'Strict mode' {
