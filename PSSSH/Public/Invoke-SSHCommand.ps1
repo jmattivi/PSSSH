@@ -49,7 +49,7 @@
         [ValidateNotNullOrEmpty()]
         [string]$SSHCommand,
         [Parameter(Position = 3, Mandatory = $false)]
-        [Switch]$AutoAcceptKey = $true,
+        [bool]$AutoAcceptKey = $true,
         [Parameter(ParameterSetName = 'UsePasswordAuthentication', Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [System.Management.Automation.PSCredential]

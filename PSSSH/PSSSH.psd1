@@ -12,7 +12,7 @@
     RootModule        = 'PSSSH.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '1.0.0'
+    ModuleVersion     = '1.0.1'
 
     # ID used to uniquely identify this module
     GUID              = '73d859e1-6073-4df6-b792-194db56e6c03'
